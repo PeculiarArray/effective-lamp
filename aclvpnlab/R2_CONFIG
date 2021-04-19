@@ -59,18 +59,18 @@ redundancy
 !
 !
 interface GigabitEthernet0/0/0
- ip address 10.10.2.1 255.255.255.0
+ ip address 10.10.3.1 255.255.255.0
  negotiation auto
 !
 interface GigabitEthernet0/0/1
- ip address 10.10.3.1 255.255.255.0
+ ip address 10.10.2.1 255.255.255.0
  negotiation auto
 !
 ip forward-protocol nd
 ip http server
 ip http authentication local
 ip http secure-server
-ip route 10.10.1.0 255.255.255.0 10.10.2.2
+ip route 10.10.1.0 255.255.255.0 10.10.2.1
 ip route 10.10.4.0 255.255.255.0 10.10.3.2
 !
 !
