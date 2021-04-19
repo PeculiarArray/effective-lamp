@@ -93,19 +93,19 @@ crypto map R1-R3-MAP 1 ipsec-isakmp
 !
 !
 interface GigabitEthernet0/0/0
- ip address 10.10.1.1 255.255.255.0
+ ip address 10.10.2.1 255.255.255.0
  negotiation auto
 !
 interface GigabitEthernet0/0/1
- ip address 10.10.2.2 255.255.255.0
+ ip address 10.10.1.2 255.255.255.0
  negotiation auto
  crypto map R1-R3-MAP
 !
 ip forward-protocol nd
 no ip http server
 ip http secure-server
-ip route 10.10.3.0 255.255.255.0 10.10.2.1
-ip route 10.10.4.0 255.255.255.0 10.10.2.1
+ip route 10.10.3.0 255.255.255.0 10.10.2.2
+ip route 10.10.4.0 255.255.255.0 10.10.2.2
 !
 !
 access-list 101 permit ip 10.10.1.0 0.0.0.255 10.10.4.0 0.0.0.255
