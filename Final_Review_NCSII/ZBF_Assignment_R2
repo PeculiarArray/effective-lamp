@@ -1,0 +1,115 @@
+!
+version 15.4
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname R2
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+class-map type inspect match-any TFTP
+ match protocol tftp
+class-map type inspect match-any HTTP
+ match protocol http
+ match protocol https
+class-map type inspect match-any DNS
+ match protocol dns
+class-map type inspect match-any ICMP
+ match protocol icmp
+!
+policy-map type inspect R3-R1_Policy
+ class type inspect ICMP
+  inspect
+ class type inspect DNS
+  inspect
+ class type inspect TFTP
+  inspect
+ class type inspect HTTP
+  inspect
+!
+policy-map type inspect R1-R3_Policy
+ class type inspect TFTP
+  inspect
+ class type inspect HTTP
+  inspect
+ class type inspect DNS
+  inspect
+!
+!
+!
+zone security R3-Zone
+zone security R1-Zone
+zone-pair security R3-R1 source R3-Zone destination R1-Zone
+ service-policy type inspect R3-R1_Policy
+zone-pair security R1-R3 source R1-Zone destination R3-Zone
+ service-policy type inspect R1-R3_Policy
+!
+!
+interface GigabitEthernet0/0/0
+ ip address 10.10.30.1 255.255.255.0
+ zone-member security R3-Zone
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0/1
+ ip address 10.10.20.2 255.255.255.0
+ zone-member security R1-Zone
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+ip route 10.10.40.0 255.255.255.0 10.10.30.2 
+ip route 10.10.10.0 255.255.255.0 10.10.20.1 
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
